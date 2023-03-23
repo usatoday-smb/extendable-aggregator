@@ -53,13 +53,13 @@ abstract class Base {
 	 */
 	public static function get_instance() {
 
-		static $instance;
+		static $instance = [];
 
-		if ( empty( $instance ) ) {
-			$instance = new static();
+		if ( empty( $instance[ static::class ] ) ) {
+			$instance[ static::class ] = new static();
 		}
 
-		return $instance;
+		return $instance[ static::class ];
 	}
 
 	/**
