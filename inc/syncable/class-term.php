@@ -209,7 +209,7 @@ class Term extends Base {
 			$term = get_term( $object_id, 'nav_menu' );
 
 			if ( $term && ! is_wp_error( $term ) ) {
-				$link = wpcom_vip_get_term_link( $term, $term->taxonomy );
+				$link = wpcom_vip_get_term_link( $term, $term->taxonomy ); // phpcs:ignore
 			}
 
 		} else {

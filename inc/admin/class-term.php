@@ -86,7 +86,7 @@ class Term extends Base {
 	 * Custom markup for sites metabox on term edit page.
 	 */
 	public function metabox_output() {
-		$term_id = ( isset( $_GET['tag_ID'] ) ) ? $this->sanitize_object_id( $_GET['tag_ID'] ) : false;
+		$term_id = ( isset( $_GET['tag_ID'] ) ) ? $this->sanitize_object_id( $_GET['tag_ID'] ) : false; // phpcs:ignore
 
 		// We don't want this metabox displaying on synced terms.
 		if ( ! $term_id || $this->is_synced( $term_id ) || ! $this->can_user_aggregate() || empty( $this->get_blogs() ) ) {

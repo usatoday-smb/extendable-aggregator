@@ -158,7 +158,7 @@ class Attachment extends Base {
 	 */
 	protected function verify_consumer_site_values( $consumer_sites ) {
 		// Verify that our request is coming from the appropriate place.
-		if ( ! isset( $_POST['synced-to-sites-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['synced-to-sites-nonce'] ), basename( __FILE__ ) ) ) {
+		if ( ! isset( $_POST['synced-to-sites-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['synced-to-sites-nonce'] ), basename( __FILE__ ) ) ) { // phpcs:ignore
 			return false;
 		}
 

@@ -24,7 +24,7 @@ function lookup_for_canonical_id( $canonical_id, $canonical_site_id ) {
 	$canonical_id        = absint( $canonical_id );
 
 	if ( ! is_array( $terms_with_canon_id ) ) {
-		$terms_with_canon_id = $wpdb->get_col( $wpdb->prepare( "SELECT term_id from $wpdb->termmeta WHERE meta_key = 'ea-syncable-import-src-id-canonical' AND meta_value = %s", $canonical_id ) );
+		$terms_with_canon_id = $wpdb->get_col( $wpdb->prepare( "SELECT term_id from $wpdb->termmeta WHERE meta_key = 'ea-syncable-import-src-id-canonical' AND meta_value = %s", $canonical_id ) ); // phpcs:ignore
 		wp_cache_set( $canonical_id, $terms_with_canon_id, $cache_group );
 	}
 

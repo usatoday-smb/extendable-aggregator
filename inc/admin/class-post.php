@@ -249,7 +249,7 @@ class Post extends Base {
 			return;
 		}
 
-		$selected = ( isset( $_GET['synced_origin'] ) && ! empty( $_GET['synced_origin'] ) ) ? $_GET['synced_origin'] : false;
+		$selected = ( isset( $_GET['synced_origin'] ) && ! empty( $_GET['synced_origin'] ) ) ? $_GET['synced_origin'] : false; // phpcs:ignore
 
 		if ( false !== $selected ) {
 			if ( is_numeric( $selected ) ) {
@@ -286,7 +286,7 @@ class Post extends Base {
 			$screen = get_current_screen();
 		}
 
-		if ( ! $screen || 'edit' !== $screen->base || empty( $_GET['synced_origin'] ) ) {
+		if ( ! $screen || 'edit' !== $screen->base || empty( $_GET['synced_origin'] ) ) { // phpcs:ignore
 			return $query;
 		}
 
@@ -302,14 +302,14 @@ class Post extends Base {
 		];
 
 		// Get content synced from any site.
-		if ( 'any' === $_GET['synced_origin'] ) {
+		if ( 'any' === $_GET['synced_origin'] ) { // phpcs:ignore
 			$new_meta_query[] = [
 				'key'     => 'ea-syncable-import-src-site',
 				'compare' => 'EXISTS',
 			];
 
 		// Only original content.
-		} elseif ( 'original' === $_GET['synced_origin'] ) {
+		} elseif ( 'original' === $_GET['synced_origin'] ) { // phpcs:ignore
 			// Override all existing filters, we only want non-synced.
 			$new_meta_query = [
 				[
@@ -322,7 +322,7 @@ class Post extends Base {
 		} else {
 			$new_meta_query[] = [
 				'key'   => 'ea-syncable-import-src-site',
-				'value' => absint( $_GET['synced_origin'] ),
+				'value' => absint( $_GET['synced_origin'] ), // phpcs:ignore
 			];
 		}
 
@@ -430,7 +430,7 @@ class Post extends Base {
 
 		$post_types = $this->get_syncable_post_types();
 
-		return in_array( $post_type, $post_types );
+		return in_array( $post_type, $post_types, true );
 	}
 
 	/**

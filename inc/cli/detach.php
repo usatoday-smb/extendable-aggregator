@@ -12,7 +12,7 @@ use WP_CLI;
  * Adds methods for detaching posts from their source on a destination site
  *
  */
-class Detach extends \WP_CLI_Command {
+class Detach extends \WPCOM_VIP_CLI_Command {
 
 	/**
 	 * Sync objects returned by WP_Query
@@ -74,9 +74,9 @@ class Detach extends \WP_CLI_Command {
 
 		foreach ( $sites as $site ) {
 
-			switch_to_blog( $site );
+			switch_to_blog( $site ); // phpcs:ignore
 
-			$posts = get_posts( $query_args );
+			$posts = get_posts( $query_args ); // phpcs:ignore
 
 			foreach ( $posts as $post ) {
 

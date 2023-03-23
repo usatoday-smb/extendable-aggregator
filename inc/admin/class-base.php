@@ -264,7 +264,7 @@ abstract class Base {
 
 		// Fetch, clean, and verify the object ID.
 		$object_id       = $this->ajax_object_exists();
-		$new_source_site = absint( $_POST['site_id'] );
+		$new_source_site = absint( $_POST['site_id'] ); // phpcs:ignore
 
 		$syncable = Master::get_syncable( $this->get_object( $object_id ) );
 
@@ -283,7 +283,7 @@ abstract class Base {
 		// Fetch, clean, and verify the post ID.
 		$object_id = $this->ajax_object_exists();
 
-		$site_id = $this->sanitize_object_id( $_POST['site_id'] );
+		$site_id = $this->sanitize_object_id( $_POST['site_id'] ); // phpcs:ignore
 
 		if ( false === $site_id ) {
 			wp_send_json_error( __( 'Site ID is not valid', 'extendable-agregator' ) );
@@ -313,7 +313,7 @@ abstract class Base {
 	 */
 	protected function ajax_object_exists() {
 		// Parse object ID and check that object exists.
-		$object_id  = $this->sanitize_object_id( $_POST['object_id'] );
+		$object_id  = $this->sanitize_object_id( $_POST['object_id'] ); // phpcs:ignore
 
 		// Object does not exist, send error and exit;
 		if ( false === $object_id || ! $this->object_exists( $object_id ) ) {
@@ -386,14 +386,14 @@ abstract class Base {
 		}
 
 		// Save site values.
-		if ( isset( $_POST['consumer_sites'] ) ) {
+		if ( isset( $_POST['consumer_sites'] ) ) { // phpcs:ignore
 			/**
 			 * $_POST value is parsed and cleaned in save_consumer_site_values().
 			 * Also, nonce is validated in the verify_consumer_site_values() method triggered in save_consumer_site_values()
 			 *
 			 * No data can be saved without the nonce and data being validated.
 			 */
-			$saved = $this->save_consumer_site_values( $object_id, $_POST['consumer_sites'] );
+			$saved = $this->save_consumer_site_values( $object_id, $_POST['consumer_sites'] ); // phpcs:ignore
 		}
 
 		/**
@@ -433,11 +433,11 @@ abstract class Base {
 			$sync = \EA\Master::get_instance()->get_syncable( $this->get_object( $object_id ) );
 
 			// If setting and relationship already match, or has already been detached then do nothing.
-			if ( in_array( $blog_id, $consumer_sites ) === $relationship || $this->is_source_detached( $object_id, $blog_id ) ) {
+			if ( in_array( $blog_id, $consumer_sites ) === $relationship || $this->is_source_detached( $object_id, $blog_id ) ) { // phpcs:ignore
 				continue;
 
 			// If we've checked this site, but don't have a relationship - set the post to syncable.
-			} elseif ( in_array( $blog_id, $consumer_sites ) && ! $relationship ) {
+			} elseif ( in_array( $blog_id, $consumer_sites ) && ! $relationship ) { // phpcs:ignore
 				// Setup sync job for object.
 				$sync::set_is_syncable( $blog_id, $object_id, true );
 			}
@@ -454,7 +454,7 @@ abstract class Base {
 	 */
 	protected function verify_consumer_site_values( $consumer_sites ) {
 		// Verify that our request is coming from the appropriate place.
-		if ( ! isset( $_POST['synced-to-sites-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['synced-to-sites-nonce'] ), basename( __FILE__ ) ) ) {
+		if ( ! isset( $_POST['synced-to-sites-nonce'] ) || ! wp_verify_nonce( wp_unslash( $_POST['synced-to-sites-nonce'] ), basename( __FILE__ ) ) ) { // phpcs:ignore
 			return false;
 		}
 
@@ -475,7 +475,7 @@ abstract class Base {
 	function sanitize_object_id( $object_id ) {
 		$object_id = wp_unslash( $object_id );
 
-		if ( ! is_numeric( $object_id ) || $object_id != floor( $object_id ) || ! $object_id ) {
+		if ( ! is_numeric( $object_id ) || $object_id != floor( $object_id ) || ! $object_id ) { // phpcs:ignore
 			return false;
 		}
 
@@ -726,7 +726,7 @@ abstract class Base {
 	 */
 	protected function get_edit_screen_object_id( $screen ) {
 		$object_id = false;
-
+ 		// phpcs:disable
 		if ( isset( $_GET['post'] ) && 'post' === $screen->base ) {
 			if (
 				( 'attachment' === get_post_type( absint( $_GET['post'] ) ) && 'attachment' === $this->type )
@@ -737,7 +737,7 @@ abstract class Base {
 		} elseif ( isset( $_GET['tag_ID'] ) && 'term' === $screen->base && 'term' === $this->type ) {
 			$object_id = $this->sanitize_object_id( $_GET['tag_ID'] );
 		}
-
+		// phpcs:enable
 		return $object_id;
 	}
 

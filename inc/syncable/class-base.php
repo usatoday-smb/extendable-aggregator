@@ -596,6 +596,12 @@ abstract class Base implements Base_Interface {
 
 		$this->insert_associations( $site_id, $object_id, $sync_object );
 
+		$to_index = get_blog_option( $site_id, 'usat_ea_tosync', [] );
+		if ( ! in_array( $object_id, $to_index ) ) {
+			$to_index[] = $object_id;
+			update_blog_option( $site_id, 'usat_ea_tosync', $to_index );
+		}
+
 		restore_current_blog();
 
 		$this->update_source( $site_id, $object_id, $sync_object );
@@ -691,6 +697,18 @@ abstract class Base implements Base_Interface {
 
 		$ignore_meta = apply_filters( sprintf( 'ea-syncable-%s-filter-ignored-meta', static::$name ), $ignore_meta );
 
+		// This allow metas to be customized for the synced posts.
+		$additional_meta = apply_filters( sprintf( 'ea-syncable-%s-filter-synced-meta', static::$name ), [] );
+
+		if ( is_array( $additional_meta ) && 0 < count( $additional_meta )) {
+			foreach( $additional_meta as $add_key => $add_value ) {
+				$sync_object['data']['meta'][$add_key] = $add_value;
+			}
+		}
+
+		// This allow us to make changes to the metas being sync.
+		$sync_object['data']['meta'] = do_action( sprintf( 'ea-syncable-%s-customize-synced-meta', static::$name ), $sync_object['data']['meta'], $sync_object['source_site'], $object_id );
+
 		foreach ( $sync_object['data']['meta'] as $meta_key => $meta_value ) {
 
 			$skip = array_filter( $ignore_meta, function( $ignore ) use ( $meta_key ) {
@@ -703,7 +721,7 @@ abstract class Base implements Base_Interface {
 
 			// todo:: support deletion of meta?
 			if ( count( $meta_value ) === 1 && count( static::get_meta( $object_id, $meta_key, false ) ) === 1 ) {
-				static::set_meta( $object_id, $meta_key, $meta_value[0] );
+				static::set_meta( $object_id, $meta_key, $meta_value[0] ); // new post ID, metakey, meta value
 			} else {
 
 				static::delete_meta( $object_id, $meta_key );

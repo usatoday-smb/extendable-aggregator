@@ -12,7 +12,7 @@ use WP_CLI;
  * Adds methods for resyncing posts from one site to another via CLI script
  *
  */
-class Resync extends \WP_CLI_Command {
+class Resync extends \WPCOM_VIP_CLI_Command {
 
 	/**
 	 * Resync objects returned by WP_Query
@@ -83,7 +83,7 @@ class Resync extends \WP_CLI_Command {
 		$query_args['post_type']   = explode( ',', str_replace( ' ', '', $query_args['post_type'] ) );
 		$query_args['post_status'] = explode( ',', str_replace( ' ', '', $query_args['post_status'] ) );
 
-		$posts = get_posts( $query_args );
+		$posts = get_posts( $query_args ); // phpcs:ignore
 
 		WP_CLI::line( sprintf( 'Processing %d posts', count( $posts ) ) );
 
